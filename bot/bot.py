@@ -1,7 +1,7 @@
 from aiogram import Bot, Dispatcher, types
 import asyncio
 
-bot = Bot("ТВОЙ_ТОКЕН")
+bot = Bot("7147939084:AAEg_yN3lj3tZZNEry5hFuL93e2oGEY6dD4")
 dp = Dispatcher()
 
 @dp.message(commands=["start"])

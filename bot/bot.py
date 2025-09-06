@@ -1,22 +1,27 @@
 from aiogram import Bot, Dispatcher, types
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 from aiogram.filters import Command
 import asyncio
 
-bot = Bot("7147939084:AAEg_yN3lj3tZZNEry5hFuL93e2oGEY6dD4")
+API_TOKEN = "7147939084:AAEg_yN3lj3tZZNEry5hFuL93e2oGEY6dD4"
+
+bot = Bot(token=API_TOKEN)
 dp = Dispatcher()
 
 @dp.message(Command("start"))
-async def start(message: types.Message):
-    kb = InlineKeyboardMarkup(
+async def start_cmd(message: types.Message):
+    kb = types.InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(
-                text="Открыть приложение",
-                web_app=WebAppInfo(url="https://tg-django-project.onrender.com/accounts/telegram-login/")
-            )]
+            [
+                types.InlineKeyboardButton(
+                    text="Войти через Telegram",
+                    web_app=types.WebAppInfo(
+                        url="https://tg-django-project.onrender.com/accounts/telegram-login/"
+                    )
+                )
+            ]
         ]
     )
-    await message.answer("Запусти мини-апп 👇", reply_markup=kb)
+    await message.answer("Привет! 👋 Нажми кнопку ниже для входа:", reply_markup=kb)
 
 async def main():
     await dp.start_polling(bot)

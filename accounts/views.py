@@ -3,6 +3,7 @@ from django.contrib.auth import login, logout
 from .forms import RegisterForm, LoginForm
 from .models import CustomUser
 from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 
 # список Telegram ID, которым назначается роль "admin"
 ADMIN_TG_IDS = [425001521, 772350098]  # замени на свои ID

@@ -1,16 +1,25 @@
 from aiogram import Bot, Dispatcher, types
-from aiogram.utils import executor
+import asyncio
 
-bot = Bot("7147939084:AAEg_yN3lj3tZZNEry5hFuL93e2oGEY6dD4")
-dp = Dispatcher(bot)
+bot = Bot("ТВОЙ_ТОКЕН")
+dp = Dispatcher()
 
-@dp.message_handler(commands=["start"])
+@dp.message(commands=["start"])
 async def start(message: types.Message):
-    kb = types.InlineKeyboardMarkup()
-    kb.add(types.InlineKeyboardButton(
-        "Открыть приложение",
-       web_app=types.WebAppInfo(url="https://tg-django-project.onrender.com/accounts/telegram-login/")
-    ))
+    kb = types.InlineKeyboardMarkup(
+        inline_keyboard=[
+            [types.InlineKeyboardButton(
+                text="Открыть приложение",
+                web_app=types.WebAppInfo(url="https://tg-django-project.onrender.com/accounts/telegram-login/")
+            )]
+        ]
+    )
     await message.answer("Запусти мини-апп 👇", reply_markup=kb)
 
-executor.start_polling(dp, skip_updates=True)
+
+async def main():
+    await dp.start_polling(bot)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())

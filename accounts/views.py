@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from .forms import RegisterForm, LoginForm
 from .models import CustomUser
+from django.views.decorators.csrf import csrf_exempt
 
 # список Telegram ID, которым назначается роль "admin"
 ADMIN_TG_IDS = [425001521, 772350098]  # замени на свои ID
@@ -57,3 +58,17 @@ def logout_view(request):
     """
     logout(request)
     return redirect("login")
+@csrf_exempt
+def telegram_login_view(request):
+    if request.method == "POST":
+        tg_id = request.POST.get("telegram_id")
+        if tg_id:
+            # ищем пользователя по Telegram ID
+            try:
+                user = CustomUser.objects.get(telegram_id=tg_id)
+                login(request, user)
+                return JsonResponse({"status": "ok", "message": "Logged in"})
+            except CustomUser.DoesNotExist:
+                return JsonResponse({"status": "error", "message": "User not found"})
+        return JsonResponse({"status": "error", "message": "No telegram_id"})
+    return JsonResponse({"status": "error", "message": "Invalid request"})

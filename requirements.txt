@@ -3,5 +3,6 @@ psycopg2-binary
 dj-database-url
 gunicorn
 whitenoise
-aiogram
+aiogram==3.13.1
 honcho
+

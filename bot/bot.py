@@ -9,7 +9,7 @@ async def start(message: types.Message):
     kb = types.InlineKeyboardMarkup()
     kb.add(types.InlineKeyboardButton(
         "Открыть приложение",
-        web_app=types.WebAppInfo(url="http://127.0.0.1:8000/accounts/telegram-login/")
+       web_app=types.WebAppInfo(url="https://tg-django-project.onrender.com/accounts/telegram-login/")
     ))
     await message.answer("Запусти мини-апп 👇", reply_markup=kb)
 

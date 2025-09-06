@@ -1,0 +1,20 @@
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+    let tg = window.Telegram.WebApp;
+    let user = tg.initDataUnsafe.user;
+
+    fetch("", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRFToken": "{{ csrf_token }}"
+        },
+        body: new URLSearchParams(user).toString()
+    }).then(res => {
+        if (res.ok) {
+            window.location.href = "/";
+        } else {
+            alert("Ошибка авторизации");
+        }
+    });
+</script>

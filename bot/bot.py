@@ -1,30 +1,23 @@
 from aiogram import Bot, Dispatcher, types
-from aiogram.filters import Command
-import asyncio
+from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
+from aiohttp import web
+import os
 
-API_TOKEN = "7147939084:AAEg_yN3lj3tZZNEry5hFuL93e2oGEY6dD4"
-
-bot = Bot(token=API_TOKEN)
+TOKEN = os.getenv("BOT_TOKEN")
+bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
-@dp.message(Command("start"))
-async def start_cmd(message: types.Message):
-    kb = types.InlineKeyboardMarkup(
-        inline_keyboard=[
-            [
-                types.InlineKeyboardButton(
-                    text="Войти через Telegram",
-                    web_app=types.WebAppInfo(
-                        url="https://tg-django-project.onrender.com/accounts/telegram-login/"
-                    )
-                )
-            ]
-        ]
-    )
-    await message.answer("Привет! 👋 Нажми кнопку ниже для входа:", reply_markup=kb)
+@dp.message(commands=["start"])
+async def cmd_start(message: types.Message):
+    await message.answer("Привет! Бот работает через Webhook 🚀")
 
-async def main():
-    await dp.start_polling(bot)
+async def on_startup(app):
+    webhook_url = "https://tg-django-project.onrender.com/webhook"
+    await bot.set_webhook(webhook_url)
+
+app = web.Application()
+SimpleRequestHandler(dispatcher=dp, bot=bot).register(app, path="/webhook")
+setup_application(app, dp, bot=bot, on_startup=on_startup)
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    web.run_app(app, port=10000)
